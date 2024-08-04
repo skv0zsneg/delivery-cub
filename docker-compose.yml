@@ -1,0 +1,30 @@
+services:
+
+  postgres-db:
+    image: postgres:12.19
+    restart: always
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - .dev/postgres-data:/var/lib/postgresql/data
+    ports:
+      - 8001:5432
+
+  server-django:
+    restart: always
+    build:
+      context: ./delivery_cub
+    environment:
+      - DEBUG=${DEBUG}
+      - SECRET_KEY=${SECRET_KEY}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=postgres-db
+      - DB_PORT=5432
+    ports:
+      - 8000:8000
+    depends_on:
+      - postgres-db
