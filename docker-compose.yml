@@ -1,33 +1,25 @@
 services:
 
-  server-django:
+  web:
     restart: always
     build: ./delivery_cub
     command: python3 manage.py runserver 0.0.0.0:8000
-    environment:
-      - DEBUG=${DEBUG}
-      - SECRET_KEY=${SECRET_KEY}
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_HOST=postgres-db
-      - DB_PORT=5432
-      - DJANGO_ADMIN_NAME=${DJANGO_ADMIN_NAME}
-      - DJANGO_ADMIN_PASSWORD=${DJANGO_ADMIN_PASSWORD}
-      - DJANGO_ADMIN_EMAIL=${DJANGO_ADMIN_EMAIL}
+    env_file:
+      - ./.env.dev
     ports:
       - 8000:8000
     depends_on:
-      - postgres-db
+      - db
 
-  postgres-db:
+  db:
     image: postgres:12.19
     restart: always
-    environment:
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_NAME}
+    env_file:
+      - ./.env.dev
     volumes:
       - .dev/postgres-data:/var/lib/postgresql/data
     ports:
       - 8001:5432
+
+volumes:
+  postgres_data:

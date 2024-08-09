@@ -13,5 +13,5 @@ $ ./build
 If superuser isn't exist than go in running docker and execute^
 
 ```bash
-$ python3 manage.py initsuperuser
+$ docker-compose exec web python manage.py migrate --noinput
 ```

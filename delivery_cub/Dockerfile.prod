@@ -1,0 +1,28 @@
+FROM python
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+RUN addgroup --system app && adduser --system --group web
+
+ENV HOME=/home/app
+ENV APP_HOME=/home/app/web
+RUN mkdir -p $APP_HOME
+RUN mkdir -p $APP_HOME/staticfiles
+# RUN chown web:web $APP_HOME/staticfiles 
+# TODO: не работает collectstaic - PermissionError: [Errno 13] Permission denied: '/home/app/web/staticfiles/admin'
+WORKDIR $APP_HOME
+
+RUN apt-get update 
+RUN apt-get install -y netcat-traditional
+RUN pip install --upgrade pip
+
+COPY requirements.txt .
+
+RUN pip install -r requirements.txt
+
+COPY . .
+
+USER web
+
+ENTRYPOINT ["/home/app/web/scripts/entrypoint.prod.sh"]
