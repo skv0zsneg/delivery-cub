@@ -12,9 +12,6 @@ DEBUG = getenv("DEBUG", False)
 
 ALLOWED_HOSTS = []
 
-
-# Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -67,10 +64,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "delivery_cub.wsgi.application"
 
-
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -81,10 +74,6 @@ DATABASES = {
         "PORT": getenv("DB_PORT"),
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -101,10 +90,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.0/topics/i18n/
-
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
@@ -115,9 +100,9 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_ROOT = Path(BASE_DIR, "staticfiles")
+LOGIN_REDIRECT_URL = "/api/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
 
 AUTH_USER_MODEL = "user.User"
 DJANGO_ADMIN_NAME = getenv("DJANGO_ADMIN_NAME")

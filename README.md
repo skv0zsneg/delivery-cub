@@ -6,8 +6,11 @@ Simple Web-Application of Food Delivery Market "DELIVERY CUB"
 
 In your Linux terminal with all needed deps run:
 
+For prod version
+
 ```bash
-$ ./build
+$ ./build.prod.sh
+$ docker exec -it -u 0 delivery-cub-web-1 python manage.py collectstatic --no-input
 ```
 
 If superuser isn't exist than go in running docker and execute^

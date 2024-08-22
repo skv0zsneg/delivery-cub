@@ -1,6 +1,7 @@
 # devilery-cub
 .env.dev
 .env.prod
+delivery_cub/static/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

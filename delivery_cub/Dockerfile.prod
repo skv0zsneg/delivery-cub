@@ -9,9 +9,9 @@ ENV HOME=/home/app
 ENV APP_HOME=/home/app/web
 RUN mkdir -p $APP_HOME
 RUN mkdir -p $APP_HOME/staticfiles
-# RUN chown web:web $APP_HOME/staticfiles 
-# TODO: не работает collectstaic - PermissionError: [Errno 13] Permission denied: '/home/app/web/staticfiles/admin'
 WORKDIR $APP_HOME
+
+RUN chown -R web:web $APP_HOME 
 
 RUN apt-get update 
 RUN apt-get install -y netcat-traditional

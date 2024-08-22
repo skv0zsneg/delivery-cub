@@ -24,6 +24,7 @@ services:
       - .dev/postgres-data:/var/lib/postgresql/data
   
   nginx:
+    restart: always
     build: ./nginx
     volumes:
       - ./delivery_cub/static:/home/app/web/staticfiles
