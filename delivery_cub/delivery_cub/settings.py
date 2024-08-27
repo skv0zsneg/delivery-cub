@@ -41,7 +41,9 @@ MIDDLEWARE = [
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
-    ]
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
 }
 
 ROOT_URLCONF = "delivery_cub.urls"
@@ -100,7 +102,7 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_ROOT = Path(BASE_DIR, "staticfiles")
-LOGIN_REDIRECT_URL = "/api/"
+LOGIN_REDIRECT_URL = "api/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
