@@ -1,8 +1,9 @@
-from pathlib import Path
 from os import getenv
+from pathlib import Path
 
 from dotenv import load_dotenv
 
+from . import __project_name__, __version__
 
 load_dotenv("../../")
 
@@ -26,6 +27,7 @@ INSTALLED_APPS = [
     "app.user",
 
     "rest_framework",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -43,7 +45,23 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": f"{__project_name__} API",
+    "VERSION": f"{__version__}",
+    "CONTACT": {
+        "name": "skv0zsneg",
+        "url": "https://t.me/skv0zsneg",
+    },
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SWAGGER_UI_SETTINGS": {
+        "filter": True,
+    },
+    "COMPONENT_SPLIT_REQUEST": True,
+    "SERVE_PERMISSIONS": ['rest_framework.permissions.IsAuthenticatedOrReadOnly'],
 }
 
 ROOT_URLCONF = "delivery_cub.urls"
