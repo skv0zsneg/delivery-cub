@@ -1,5 +1,7 @@
 from django.db import models
 
+from app.restaurant.managers import DishManager
+
 
 class Restaurant(models.Model):
     """Ресторан"""
@@ -19,6 +21,7 @@ class Dish(models.Model):
 
     restaurant = models.ForeignKey(
         Restaurant,
+        related_name='dishes',
         on_delete=models.CASCADE,
     )
     name = models.CharField(
@@ -33,3 +36,5 @@ class Dish(models.Model):
     class Meta:
         verbose_name = "блюдо"
         verbose_name_plural = "блюда"
+
+    objects = DishManager()
