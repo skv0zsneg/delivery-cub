@@ -57,8 +57,8 @@ SPECTACULAR_SETTINGS = {
     "TITLE": f"{__project_name__} API",
     "VERSION": f"{__version__}",
     "CONTACT": {
-        "name": "skv0zsneg",
-        "url": "https://t.me/skv0zsneg",
+        "name": "GitHub - skv0zsneg",
+        "url": "https://github.com/skv0zsneg",
     },
     "SERVE_INCLUDE_SCHEMA": False,
     "SWAGGER_UI_SETTINGS": {
