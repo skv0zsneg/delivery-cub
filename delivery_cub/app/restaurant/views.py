@@ -4,6 +4,7 @@ from rest_framework import permissions, viewsets
 from app.restaurant.models import Dish, Restaurant
 from app.restaurant.serializers import DishSerializer, RestaurantSerializer
 
+
 # Filters
 
 class RestaurantFilter(filters.FilterSet):

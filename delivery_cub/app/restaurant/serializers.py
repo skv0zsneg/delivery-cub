@@ -6,7 +6,7 @@ from app.restaurant.models import Dish, Restaurant
 class DishSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dish
-        fields = '__all__'
+        fields = "__all__"
 
 
 class RestaurantDishSerializer(serializers.ModelSerializer):
@@ -27,5 +27,5 @@ class RestaurantSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "name",
-            "dishes"
+            "dishes",
         )
