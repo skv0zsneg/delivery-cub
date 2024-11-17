@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class OrderConfig(AppConfig):
+class RateConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "app.order"
+    name = "app.rate"

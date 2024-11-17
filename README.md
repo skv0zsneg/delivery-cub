@@ -13,8 +13,18 @@ $ ./build.prod.sh
 $ docker exec -it -u 0 delivery-cub-web-1 python manage.py collectstatic --no-input
 ```
 
-If superuser isn't exist than go in running docker and execute^
+If superuser isn't exist than go in running docker and execute:
 
 ```bash
 $ docker-compose exec web python manage.py migrate --noinput
+```
+
+## Developing
+
+Run linters
+
+Backend:
+
+```bash
+$ bash delivery_cub/scripts/lint_checks.sh
 ```

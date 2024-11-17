@@ -29,3 +29,13 @@ class RestaurantSerializer(serializers.ModelSerializer):
             "name",
             "dishes",
         )
+
+
+class AddDishToCartSerializer(serializers.Serializer):
+    quantity = serializers.IntegerField()
+
+    def valid_quantity(self, value: int):
+        if value < 1:
+            raise serializers.ValidationError(
+                "Количество товара не может быть меньше нуля"
+            )

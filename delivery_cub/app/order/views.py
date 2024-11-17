@@ -1,7 +1,7 @@
 from rest_framework import permissions, viewsets
 
-from app.order.models import OrderedDish, Order
-from app.order.serializers import OrderSerializer, OrderedDishSerializer
+from app.order.models import Order, OrderedDish
+from app.order.serializers import OrderedDishSerializer, OrderSerializer
 
 
 class OrderedDishViewSet(viewsets.ModelViewSet):

@@ -1,12 +1,12 @@
 from rest_framework import permissions, viewsets
 
-from app.cart.models import Cart, CartPosition
-from app.cart.serializers import CartSerializer, CartPositionSerializer
+from app.custom_user.models import CartPosition, CustomUser
+from app.custom_user.serializers import CartPositionSerializer, UserSerializer
 
 
-class CartViewSet(viewsets.ModelViewSet):
-    queryset = Cart.objects.all()
-    serializer_class = CartSerializer
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.all()
+    serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 

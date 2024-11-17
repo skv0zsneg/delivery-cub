@@ -1,15 +1,15 @@
 from rest_framework import serializers
 
-from app.order.models import OrderedDish, Order
+from app.order.models import Order, OrderedDish
 
 
 class OrderedDishSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderedDish
-        fields = '__all__'
+        fields = "__all__"
 
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = '__all__'
+        fields = "__all__"

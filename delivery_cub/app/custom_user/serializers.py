@@ -1,18 +1,24 @@
 from rest_framework import serializers
 
-from app.user.models import User
+from app.custom_user.models import CartPosition, CustomUser
 
 
 class UserSerializer(serializers.ModelSerializer):
+
     class Meta:
-        model = User
+        model = CustomUser
         fields = (
             "id",
-            "is_superuser",
             "username",
             "first_name",
             "last_name",
             "email",
-            "last_login",
-            "date_joined",
+            "password",
         )
+
+
+class CartPositionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = CartPosition
+        fields = "__all__"

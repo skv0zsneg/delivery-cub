@@ -1,0 +1,8 @@
+-r requirements.txt
+
+black==24.10.0
+django-stubs[compatible-mypy]
+djangorestframework-stubs[compatible-mypy]
+flake8==7.1.1
+isort==5.13.2
+mypy==1.13.0

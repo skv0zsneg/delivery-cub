@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = getenv("SECRET_KEY", False)
 DEBUG = getenv("DEBUG", False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS: list[str] = []
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -21,10 +21,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Local Apps
-    "app.cart",
+    "app.common",
     "app.order",
+    "app.rate",
     "app.restaurant",
-    "app.user",
+    "app.custom_user",
     # Deps
     "rest_framework",
     "django_filters",
@@ -128,7 +129,7 @@ LOGIN_REDIRECT_URL = "api/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = "user.User"
+AUTH_USER_MODEL = "custom_user.CustomUser"
 DJANGO_ADMIN_NAME = getenv("DJANGO_ADMIN_NAME")
 DJANGO_ADMIN_PASSWORD = getenv("DJANGO_ADMIN_PASSWORD")
 DJANGO_ADMIN_EMAIL = getenv("DJANGO_ADMIN_EMAIL")

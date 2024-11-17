@@ -1,48 +1,31 @@
+import uuid
+
 from django.db import models
-from django.utils import timezone
 
-from app.user.models import User
-
-
-class OrderedDish(models.Model):
-    """Заказные блюда"""
-
-    name = models.CharField(
-        verbose_name="название",
-    )
-    price = models.DecimalField(
-        verbose_name="цена",
-        decimal_places=2,
-        max_digits=12,
-    )
-    quantity = models.PositiveBigIntegerField(
-        verbose_name="количество",
-    )
-
-    class Meta:
-        verbose_name = "заказанное блюдо"
-        verbose_name_plural = "заказанные блюда"
+from app.custom_user.models import CustomUser
 
 
 class Order(models.Model):
     """Заказ"""
 
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
+
     user = models.ForeignKey(
-        User,
+        CustomUser,
         on_delete=models.CASCADE,
+        related_name="order",
         verbose_name="пользователь",
-        related_name="order",
     )
-    ordered_dish = models.ForeignKey(
-        OrderedDish,
-        on_delete=models.PROTECT,
-        verbose_name="заказанные блюда",
-        related_name="order",
-    )
+
     create_datetime = models.DateTimeField(
         verbose_name="дата и время заказа",
-        default=timezone.now,
+        auto_now_add=True,
     )
+
     total_price = models.DecimalField(
         verbose_name="стоимость заказа",
         decimal_places=2,
@@ -52,3 +35,42 @@ class Order(models.Model):
     class Meta:
         verbose_name = "заказ"
         verbose_name_plural = "заказы"
+
+
+class OrderedDish(models.Model):
+    """Заказные блюда"""
+
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
+
+    order = models.ForeignKey(
+        Order,
+        on_delete=models.CASCADE,
+        related_name="ordered_dishes",
+        verbose_name="заказ",
+    )
+
+    restaurant_name = models.CharField(
+        verbose_name="название ресторана",
+    )
+
+    dish_title = models.CharField(
+        verbose_name="название блюда",
+    )
+
+    dish_price = models.DecimalField(
+        verbose_name="цена",
+        decimal_places=2,
+        max_digits=12,
+    )
+
+    dish_quantity = models.PositiveIntegerField(
+        verbose_name="количество блюд",
+    )
+
+    class Meta:
+        verbose_name = "заказанное блюдо"
+        verbose_name_plural = "заказанные блюда"

@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 
 from app.restaurant.managers import DishManager
@@ -5,6 +7,12 @@ from app.restaurant.managers import DishManager
 
 class Restaurant(models.Model):
     """Ресторан"""
+
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
 
     name = models.CharField(
         verbose_name="наименование",
@@ -19,14 +27,26 @@ class Restaurant(models.Model):
 class Dish(models.Model):
     """Блюдо"""
 
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
+
     restaurant = models.ForeignKey(
         Restaurant,
-        related_name='dishes',
+        related_name="dishes",
         on_delete=models.CASCADE,
     )
-    name = models.CharField(
+
+    title = models.CharField(
         verbose_name="название",
     )
+
+    description = models.CharField(
+        verbose_name="описание",
+    )
+
     price = models.DecimalField(
         verbose_name="цена",
         decimal_places=2,
@@ -36,5 +56,11 @@ class Dish(models.Model):
     class Meta:
         verbose_name = "блюдо"
         verbose_name_plural = "блюда"
+
+        constraints = (
+            models.UniqueConstraint(
+                name="unique_dish_per_restaurant", fields=("restaurant", "name")
+            ),
+        )
 
     objects = DishManager()

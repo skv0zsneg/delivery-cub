@@ -4,8 +4,8 @@ from rest_framework import permissions, viewsets
 from app.restaurant.models import Dish, Restaurant
 from app.restaurant.serializers import DishSerializer, RestaurantSerializer
 
-
 # Filters
+
 
 class RestaurantFilter(filters.FilterSet):
     id = filters.NumberFilter(
@@ -20,10 +20,11 @@ class RestaurantFilter(filters.FilterSet):
 
     class Meta:
         model = Restaurant
-        fields = []
+        fields: list[str] = []
 
 
 # ViewSets
+
 
 class RestaurantViewSet(viewsets.ModelViewSet):
     queryset = Restaurant.objects.all()
