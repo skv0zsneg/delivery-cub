@@ -2,8 +2,6 @@ import uuid
 
 from django.db import models
 
-from app.restaurant.managers import DishManager
-
 
 class Restaurant(models.Model):
     """Ресторан"""
@@ -62,5 +60,3 @@ class Dish(models.Model):
                 name="unique_dish_per_restaurant", fields=("restaurant", "title")
             ),
         )
-
-    objects = DishManager()

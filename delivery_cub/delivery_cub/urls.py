@@ -18,6 +18,9 @@ router.register(r"rate", rate_views.RateViewSet, basename="rate")
 router.register(r"restaurant", restaurant_views.RestaurantViewSet, basename="restaurant")
 router.register(r"user", user_views.UserViewSet, basename="user")
 
+api_views = [
+    path(r"api/menu", restaurant_views.MenuAPIView.as_view(), name="menu"),
+]
 
 urlpatterns = [
     path("", lambda _: redirect("api/docs/")),
@@ -26,3 +29,5 @@ urlpatterns = [
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("api/docs/", SpectacularSwaggerView.as_view(url_name="schema"), name="docs"),
 ]
+
+urlpatterns += api_views
