@@ -59,7 +59,7 @@ class Dish(models.Model):
 
         constraints = (
             models.UniqueConstraint(
-                name="unique_dish_per_restaurant", fields=("restaurant", "name")
+                name="unique_dish_per_restaurant", fields=("restaurant", "title")
             ),
         )
 

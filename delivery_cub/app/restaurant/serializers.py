@@ -14,7 +14,7 @@ class RestaurantDishSerializer(serializers.ModelSerializer):
         model = Dish
         fields = (
             "id",
-            "name",
+            "title",
             "price",
         )
 

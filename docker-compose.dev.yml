@@ -6,9 +6,9 @@ services:
     env_file:
       - ./.env.dev
     volumes:
-      - .dev/postgres-data:/var/lib/postgresql/data
+      - delivery_cub_db_dev:/var/lib/postgresql/data
     ports:
       - 8001:5432
 
 volumes:
-  postgres_data:
+  delivery_cub_db_dev:

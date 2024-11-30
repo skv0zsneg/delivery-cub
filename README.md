@@ -21,6 +21,12 @@ $ docker-compose exec web python manage.py migrate --noinput
 
 ## Developing
 
+Export developing env:
+
+```bash
+$ export $(grep -v '^#' .env.dev | xargs -d '\n')
+```
+
 Run linters
 
 Backend:
