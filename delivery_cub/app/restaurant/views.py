@@ -46,7 +46,7 @@ class MenuAPIView(views.APIView):
                 many=True,
             ),
         ],
-        responses={200: RestaurantWithDishSerializer},
+        responses={status.HTTP_200_OK: RestaurantWithDishSerializer},
     )
     def get(self, request: Request, **kwargs):
         restaurant_ids = request.query_params.getlist("restaurant")
