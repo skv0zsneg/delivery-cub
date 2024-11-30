@@ -61,7 +61,5 @@ class CartPosition(models.Model):
         verbose_name_plural = "позиции в корзине"
 
         constraints = (
-            models.UniqueConstraint(
-                name="unique_dish_in_cart_per_user", fields=("user", "dish")
-            ),
+            models.UniqueConstraint(name="unique_dish_in_cart_per_user", fields=("user", "dish")),
         )

@@ -32,5 +32,6 @@ Run linters
 Backend:
 
 ```bash
-$ bash delivery_cub/scripts/lint_checks.sh
+$ cd delivery_cub
+$ bash /scripts/lint_checks.sh
 ```
