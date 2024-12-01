@@ -6,7 +6,9 @@ from rest_framework.response import Response
 from app.custom_user.models import CartPosition, CustomUser
 from app.custom_user.serializers import (
     CartPositionSerializer,
+    CartSerializer,
     DishIdAndQuantitySerializer,
+    DishInCartSerializer,
     UserSerializer,
 )
 
@@ -20,7 +22,7 @@ class UserViewSet(viewsets.ModelViewSet):
         request=DishIdAndQuantitySerializer,
         responses={status.HTTP_201_CREATED: CartPositionSerializer},
     )
-    @action(detail=True, methods=["POST"])
+    @action(detail=True, methods=["POST"], url_path="add-dish-to-cart")
     def add_dish_to_cart(self, request, **kwargs):
         serializer = DishIdAndQuantitySerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -53,7 +55,7 @@ class UserViewSet(viewsets.ModelViewSet):
             status.HTTP_404_NOT_FOUND: str,
         },
     )
-    @action(detail=True, methods=["POST"])
+    @action(detail=True, methods=["POST"], url_path="remove-dish-from-cart")
     def remove_dish_from_cart(self, request, **kwargs):
         serializer = DishIdAndQuantitySerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -82,6 +84,41 @@ class UserViewSet(viewsets.ModelViewSet):
 
         return Response(
             response_result,
+            status=status.HTTP_200_OK,
+        )
+
+    @extend_schema(responses={status.HTTP_200_OK: CartSerializer})
+    @action(detail=True, methods=["GET"], url_path="list-cart")
+    def list_cart(self, request, **kwargs):
+        user = self.get_object()
+        cart_positions = CartPosition.objects.select_related("dish").filter(user=user)
+
+        dish_in_carts = []
+        total_price = 0
+        for cart_position in cart_positions:
+            total_price_for_dish = cart_position.quantity * cart_position.dish.price
+            total_price += total_price_for_dish
+            dish_in_cart_serializer = DishInCartSerializer(
+                data={
+                    "cart_position_id": cart_position.pk,
+                    "dish_title": cart_position.dish.title,
+                    "quantity": cart_position.quantity,
+                    "price": total_price_for_dish,
+                }
+            )
+            dish_in_cart_serializer.is_valid(raise_exception=True)
+            dish_in_carts.append(dish_in_cart_serializer.data)
+
+        cart_serializer = CartSerializer(
+            data={
+                "total_price": total_price,
+                "positions": dish_in_carts,
+            },
+        )
+        cart_serializer.is_valid(raise_exception=True)
+
+        return Response(
+            cart_serializer.data,
             status=status.HTTP_200_OK,
         )
 
