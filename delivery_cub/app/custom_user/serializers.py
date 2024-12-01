@@ -26,7 +26,7 @@ class CartPositionSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class AddDishToCartSerializer(serializers.Serializer):
+class DishIdAndQuantitySerializer(serializers.Serializer):
     dish_id = serializers.UUIDField(write_only=True)
     quantity = serializers.IntegerField(write_only=True)
 

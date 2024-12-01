@@ -5,8 +5,8 @@ from rest_framework.response import Response
 
 from app.custom_user.models import CartPosition, CustomUser
 from app.custom_user.serializers import (
-    AddDishToCartSerializer,
     CartPositionSerializer,
+    DishIdAndQuantitySerializer,
     UserSerializer,
 )
 
@@ -17,15 +17,15 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     @extend_schema(
-        request=AddDishToCartSerializer,
+        request=DishIdAndQuantitySerializer,
         responses={status.HTTP_201_CREATED: CartPositionSerializer},
     )
     @action(detail=True, methods=["POST"])
     def add_dish_to_cart(self, request, **kwargs):
-        serializer = AddDishToCartSerializer(data=request.data)
+        serializer = DishIdAndQuantitySerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        user: CustomUser = self.get_object()
+        user = self.get_object()
 
         try:
             cart_position = CartPosition.objects.get(
@@ -44,6 +44,45 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response(
             CartPositionSerializer(cart_position).data,
             status=status.HTTP_201_CREATED,
+        )
+
+    @extend_schema(
+        request=DishIdAndQuantitySerializer,
+        responses={
+            status.HTTP_200_OK: CartPositionSerializer,
+            status.HTTP_404_NOT_FOUND: str,
+        },
+    )
+    @action(detail=True, methods=["POST"])
+    def remove_dish_from_cart(self, request, **kwargs):
+        serializer = DishIdAndQuantitySerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = self.get_object()
+        dish_id = serializer.validated_data["dish_id"]
+
+        try:
+            cart_position = CartPosition.objects.get(
+                user=self.get_object(),
+                dish_id=serializer.validated_data["dish_id"],
+            )
+        except CartPosition.DoesNotExist:
+            return Response(
+                f"Position for dish with pk '{dish_id}' for user "
+                f"with pk '{user.pk}' does not exist",
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        cart_position.quantity -= serializer.validated_data["quantity"]
+        if cart_position.quantity <= 0:
+            cart_position.delete()[0]
+            response_result = {}
+        else:
+            cart_position.save()
+            response_result = CartPositionSerializer(cart_position).data
+
+        return Response(
+            response_result,
+            status=status.HTTP_200_OK,
         )
 
 
