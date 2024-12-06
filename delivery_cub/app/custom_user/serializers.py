@@ -17,7 +17,13 @@ class UserSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "email",
+            "balance",
         )
+
+    def validate_balance(self, value: Decimal):
+        if value < 0:
+            raise serializers.ValidationError("Balance cannot be lower than 0")
+        return value
 
 
 class CartPositionSerializer(serializers.ModelSerializer):
@@ -75,4 +81,13 @@ class CartSerializer(serializers.Serializer):
     def validate_total_price(self, value: Decimal):
         if value < 0:
             raise serializers.ValidationError("Total price cannot be lower or equal to 0")
+        return value
+
+
+class TopUpBalanceSerializer(serializers.Serializer):
+    amount = serializers.FloatField(write_only=True)
+
+    def validate_amount(self, value: float):
+        if value <= 0:
+            raise serializers.ValidationError("Amount cannot be lower or equal to 0")
         return value

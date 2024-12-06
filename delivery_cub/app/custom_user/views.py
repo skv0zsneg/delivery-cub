@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from drf_spectacular.utils import extend_schema
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
@@ -9,8 +11,11 @@ from app.custom_user.serializers import (
     CartSerializer,
     DishIdAndQuantitySerializer,
     DishInCartSerializer,
+    TopUpBalanceSerializer,
     UserSerializer,
 )
+from app.order.models import Order, OrderedDish
+from app.order.serializers import OrderSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -119,6 +124,68 @@ class UserViewSet(viewsets.ModelViewSet):
 
         return Response(
             cart_serializer.data,
+            status=status.HTTP_200_OK,
+        )
+
+    @extend_schema(responses={status.HTTP_200_OK: OrderSerializer})
+    @action(detail=True, methods=["GET"], url_path="pay-cart")
+    def pay_cart(self, request, **kwargs):
+        user = self.get_object()
+        cart_positions = CartPosition.objects.select_related("dish").filter(user=user)
+
+        ordered_dishes = []
+        total_price = Decimal(0)
+        order = Order(user=user, total_price=0)
+        for cart_position in cart_positions:
+            total_price_for_dish = cart_position.quantity * cart_position.dish.price
+            total_price += total_price_for_dish
+            ordered_dishes.append(
+                OrderedDish(
+                    order=order,
+                    restaurant_name=cart_position.dish.restaurant.name,
+                    dish_title=cart_position.dish.title,
+                    dish_price=cart_position.dish.price,
+                    dish_quantity=cart_position.quantity,
+                )
+            )
+
+        if total_price > user.balance:
+            # TODO: добавить статус `success: false` для фронта
+            return Response(
+                "Not enough funds on the balance",
+                status=status.HTTP_200_OK,
+            )
+
+        user.balance = user.balance - total_price
+        order.total_price = total_price
+
+        user.save()
+        order.save()
+        OrderedDish.objects.bulk_create(ordered_dishes)
+        cart_positions.delete()
+
+        return Response(
+            OrderSerializer(order).data,
+            status=status.HTTP_200_OK,
+        )
+
+    @extend_schema(
+        request=TopUpBalanceSerializer,
+        responses={
+            status.HTTP_200_OK: UserSerializer,
+        },
+    )
+    @action(detail=True, methods=["POST"], url_path="top-up-balance")
+    def top_up_balance(self, request, **kwargs):
+        serializer = TopUpBalanceSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        user = self.get_object()
+        user.balance += Decimal(serializer.validated_data["amount"])
+        user.save()
+
+        return Response(
+            UserSerializer(user).data,
             status=status.HTTP_200_OK,
         )
 
