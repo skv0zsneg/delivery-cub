@@ -24,7 +24,16 @@ $ docker-compose exec web python manage.py migrate --noinput
 Export developing env:
 
 ```bash
-$ export $(grep -v '^#' .env.dev | xargs -d '\n')
+$ source .env.dev
+```
+
+Run tests
+
+Backend:
+
+```bash
+$ cd delivery_cub
+$ python3 manage.py test
 ```
 
 Run linters
