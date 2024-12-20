@@ -15,13 +15,13 @@ from app.restaurant.serializers import (
 
 
 class RestaurantViewSet(viewsets.ModelViewSet):
-    queryset = Restaurant.objects.all()
+    queryset = Restaurant.objects.all().order_by("name")
     serializer_class = RestaurantSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 
 class DishViewSet(viewsets.ModelViewSet):
-    queryset = Dish.objects.all()
+    queryset = Dish.objects.all().order_by("restaurant")
     serializer_class = DishSerializer
     permission_classes = [permissions.IsAuthenticated]
 
