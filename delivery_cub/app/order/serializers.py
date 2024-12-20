@@ -13,3 +13,17 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = "__all__"
+
+
+class OrderWithDishesSerializer(serializers.ModelSerializer):
+    ordered_dishes = OrderedDishSerializer(many=True)
+
+    class Meta:
+        model = Order
+        fields = (
+            "id",
+            "user",
+            "create_datetime",
+            "total_price",
+            "ordered_dishes",
+        )

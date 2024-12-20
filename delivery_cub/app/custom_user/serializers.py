@@ -5,6 +5,7 @@ from rest_framework import serializers
 
 from app.custom_user.models import CartPosition, CustomUser
 from app.restaurant.models import Dish
+from app.order.serializers import OrderWithDishesSerializer
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -91,3 +92,9 @@ class TopUpBalanceSerializer(serializers.Serializer):
         if value <= 0:
             raise serializers.ValidationError("Amount cannot be lower or equal to 0")
         return value
+
+
+class UserOrdersSerializer(serializers.Serializer):
+    total_count = serializers.IntegerField(min_value=0)
+    total_sum = serializers.FloatField(min_value=0.0)
+    last_orders = OrderWithDishesSerializer(many=True)
