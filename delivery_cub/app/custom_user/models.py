@@ -1,9 +1,11 @@
+from decimal import Decimal
 import uuid
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 from app.restaurant.models import Dish
+from app.common.helpers import custom_fields
 
 
 class CustomUser(AbstractUser):
@@ -15,11 +17,8 @@ class CustomUser(AbstractUser):
         editable=False,
     )
 
-    balance = models.DecimalField(
-        default=0,
-        verbose_name="баланс",
-        decimal_places=2,
-        max_digits=12,
+    balance = custom_fields.CurrencyField(
+        default=Decimal(0.0),
     )
 
     class Meta:

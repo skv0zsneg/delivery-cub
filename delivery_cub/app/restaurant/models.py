@@ -2,6 +2,8 @@ import uuid
 
 from django.db import models
 
+from app.common.helpers import custom_fields
+
 
 class Restaurant(models.Model):
     """Ресторан"""
@@ -45,11 +47,7 @@ class Dish(models.Model):
         verbose_name="описание",
     )
 
-    price = models.DecimalField(
-        verbose_name="цена",
-        decimal_places=2,
-        max_digits=12,
-    )
+    price = custom_fields.CurrencyField()
 
     class Meta:
         verbose_name = "блюдо"

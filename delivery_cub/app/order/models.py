@@ -3,6 +3,7 @@ import uuid
 from django.db import models
 
 from app.custom_user.models import CustomUser
+from app.common.helpers import custom_fields
 
 
 class Order(models.Model):
@@ -26,11 +27,7 @@ class Order(models.Model):
         auto_now_add=True,
     )
 
-    total_price = models.DecimalField(
-        verbose_name="стоимость заказа",
-        decimal_places=2,
-        max_digits=12,
-    )
+    total_price = custom_fields.CurrencyField()
 
     class Meta:
         verbose_name = "заказ"
@@ -61,11 +58,7 @@ class OrderedDish(models.Model):
         verbose_name="название блюда",
     )
 
-    dish_price = models.DecimalField(
-        verbose_name="цена",
-        decimal_places=2,
-        max_digits=12,
-    )
+    dish_price = custom_fields.CurrencyField()
 
     dish_quantity = models.PositiveIntegerField(
         verbose_name="количество блюд",
