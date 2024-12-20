@@ -1,17 +1,16 @@
 from decimal import Decimal
+
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from app.restaurant.models import Restaurant, Dish
 from app.custom_user.models import CustomUser
+from app.restaurant.models import Dish, Restaurant
 
 
 class RestaurantTests(APITestCase):
     def setUp(self):
-        self.user = CustomUser.objects.create_user(
-            username="testuser", password="testpassword"
-        )
+        self.user = CustomUser.objects.create_user(username="testuser", password="testpassword")
         self.client.force_authenticate(user=self.user)
 
         self.restaurant1 = Restaurant.objects.create(name="Restaurant 1")
@@ -54,9 +53,7 @@ class RestaurantTests(APITestCase):
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Restaurant.objects.count(), 3)
-        self.assertEqual(
-            Restaurant.objects.get(id=response.data["id"]).name, "New Restaurant"
-        )
+        self.assertEqual(Restaurant.objects.get(id=response.data["id"]).name, "New Restaurant")
 
     def test_update_restaurant(self):
         url = reverse("restaurant-detail", args=[self.restaurant1.id])
@@ -75,9 +72,7 @@ class RestaurantTests(APITestCase):
 
 class DishTests(APITestCase):
     def setUp(self):
-        self.user = CustomUser.objects.create_user(
-            username="testuser", password="testpassword"
-        )
+        self.user = CustomUser.objects.create_user(username="testuser", password="testpassword")
         self.client.force_authenticate(user=self.user)
 
         self.restaurant = Restaurant.objects.create(name="Restaurant")
@@ -166,9 +161,7 @@ class DishTests(APITestCase):
 
 class MenuTests(APITestCase):
     def setUp(self):
-        self.user = CustomUser.objects.create_user(
-            username="testuser", password="testpassword"
-        )
+        self.user = CustomUser.objects.create_user(username="testuser", password="testpassword")
         self.client.force_authenticate(user=self.user)
 
         self.restaurant1 = Restaurant.objects.create(name="Restaurant 1")

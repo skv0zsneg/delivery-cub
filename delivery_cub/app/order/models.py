@@ -2,8 +2,8 @@ import uuid
 
 from django.db import models
 
-from app.custom_user.models import CustomUser
 from app.common.helpers import custom_fields
+from app.custom_user.models import CustomUser
 
 
 class Order(models.Model):

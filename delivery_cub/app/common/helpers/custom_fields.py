@@ -1,7 +1,7 @@
 from decimal import Decimal
 
-from django.db import models
 from django.core import validators
+from django.db import models
 
 
 class CurrencyField(models.DecimalField):

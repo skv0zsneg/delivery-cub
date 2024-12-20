@@ -1,11 +1,11 @@
-from decimal import Decimal
 import uuid
+from decimal import Decimal
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from app.restaurant.models import Dish
 from app.common.helpers import custom_fields
+from app.restaurant.models import Dish
 
 
 class CustomUser(AbstractUser):
