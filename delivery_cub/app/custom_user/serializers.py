@@ -4,8 +4,8 @@ from uuid import UUID
 from rest_framework import serializers
 
 from app.custom_user.models import CartPosition, CustomUser
-from app.restaurant.models import Dish
 from app.order.serializers import OrderWithDishesSerializer
+from app.restaurant.models import Dish
 
 
 class UserSerializer(serializers.ModelSerializer):

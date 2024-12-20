@@ -1,10 +1,10 @@
 from decimal import Decimal
 
+from django.db.models import Sum
 from drf_spectacular.utils import extend_schema
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.db.models import Sum
 
 from app.custom_user.models import CartPosition, CustomUser
 from app.custom_user.serializers import (
@@ -13,8 +13,8 @@ from app.custom_user.serializers import (
     DishIdAndQuantitySerializer,
     DishInCartSerializer,
     TopUpBalanceSerializer,
-    UserSerializer,
     UserOrdersSerializer,
+    UserSerializer,
 )
 from app.order.models import Order, OrderedDish
 from app.order.serializers import OrderSerializer
@@ -198,9 +198,9 @@ class UserViewSet(viewsets.ModelViewSet):
         orders_info = {}
 
         orders_info["last_orders"] = Order.objects.filter(user=user)[:10]
-        orders_info["total_sum"] = (
-            Order.objects.aggregate(all_orders_sum=Sum("total_price"))["all_orders_sum"]
-        )
+        orders_info["total_sum"] = Order.objects.aggregate(all_orders_sum=Sum("total_price"))[
+            "all_orders_sum"
+        ]
         orders_info["total_count"] = Order.objects.count()
 
         return Response(
