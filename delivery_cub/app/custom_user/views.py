@@ -1,11 +1,13 @@
 from decimal import Decimal
 
 from django.db.models import Sum
+from django.db.models.functions import Coalesce
 from drf_spectacular.utils import extend_schema
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from app.common.helpers import custom_fields
 from app.custom_user.models import CartPosition, CustomUser
 from app.custom_user.serializers import (
     CartPositionSerializer,
@@ -21,7 +23,7 @@ from app.order.serializers import OrderSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = CustomUser.objects.all()
+    queryset = CustomUser.objects.all().order_by("username")
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -66,21 +68,11 @@ class UserViewSet(viewsets.ModelViewSet):
     def remove_dish_from_cart(self, request, **kwargs):
         serializer = DishIdAndQuantitySerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = self.get_object()
-        dish_id = serializer.validated_data["dish_id"]
 
-        try:
-            cart_position = CartPosition.objects.get(
-                user=self.get_object(),
-                dish_id=serializer.validated_data["dish_id"],
-            )
-        except CartPosition.DoesNotExist:
-            return Response(
-                f"Position for dish with pk '{dish_id}' for user "
-                f"with pk '{user.pk}' does not exist",
-                status=status.HTTP_404_NOT_FOUND,
-            )
-
+        cart_position = CartPosition.objects.get(
+            user=self.get_object(),
+            dish_id=serializer.validated_data["dish_id"],
+        )
         cart_position.quantity -= serializer.validated_data["quantity"]
         if cart_position.quantity <= 0:
             cart_position.delete()[0]
@@ -198,9 +190,13 @@ class UserViewSet(viewsets.ModelViewSet):
         orders_info = {}
 
         orders_info["last_orders"] = Order.objects.filter(user=user)[:10]
-        orders_info["total_sum"] = Order.objects.aggregate(all_orders_sum=Sum("total_price"))[
-            "all_orders_sum"
-        ]
+        orders_info["total_sum"] = Order.objects.aggregate(
+            all_orders_sum=Coalesce(
+                Sum("total_price"),
+                0.0,
+                output_field=custom_fields.CurrencyField(),
+            )
+        )["all_orders_sum"]
         orders_info["total_count"] = Order.objects.count()
 
         return Response(
