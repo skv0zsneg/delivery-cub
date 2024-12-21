@@ -5,12 +5,12 @@ from app.order.serializers import OrderedDishSerializer, OrderSerializer
 
 
 class OrderedDishViewSet(viewsets.ModelViewSet):
-    queryset = OrderedDish.objects.all()
+    queryset = OrderedDish.objects.all().order_by("dish_title")
     serializer_class = OrderedDishSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 
 class OrderViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
+    queryset = Order.objects.all().order_by("create_datetime")
     serializer_class = OrderSerializer
     permission_classes = [permissions.IsAuthenticated]
