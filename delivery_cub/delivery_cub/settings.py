@@ -1,3 +1,4 @@
+from datetime import timedelta
 from os import getenv
 from pathlib import Path
 
@@ -70,6 +71,12 @@ SPECTACULAR_SETTINGS = {
     },
     "COMPONENT_SPLIT_REQUEST": True,
     "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAuthenticatedOrReadOnly"],
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
+    "ROTATE_REFRESH_TOKENS": True,
 }
 
 ROOT_URLCONF = "delivery_cub.urls"
