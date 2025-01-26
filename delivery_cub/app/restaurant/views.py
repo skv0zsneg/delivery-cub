@@ -6,7 +6,7 @@ from rest_framework import permissions, status, views, viewsets
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from app.restaurant.models import Dish, Restaurant
+from app.restaurant.models import RestaurantDish, Restaurant
 from app.restaurant.serializers import (
     DishSerializer,
     RestaurantSerializer,
@@ -21,7 +21,7 @@ class RestaurantViewSet(viewsets.ModelViewSet):
 
 
 class DishViewSet(viewsets.ModelViewSet):
-    queryset = Dish.objects.all().order_by("restaurant")
+    queryset = RestaurantDish.objects.all().order_by("restaurant")
     serializer_class = DishSerializer
     permission_classes = [permissions.IsAuthenticated]
 

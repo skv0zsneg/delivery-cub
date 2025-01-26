@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 from app.common.helpers import custom_fields
-from app.restaurant.models import Dish
+from app.restaurant.models import RestaurantDish
 
 
 class CustomUser(AbstractUser):
@@ -43,7 +43,7 @@ class CartPosition(models.Model):
     )
 
     dish = models.ForeignKey(
-        Dish,
+        RestaurantDish,
         on_delete=models.SET_NULL,
         related_name="cart_positions",
         verbose_name="блюдо",

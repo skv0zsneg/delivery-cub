@@ -5,7 +5,7 @@ from rest_framework import serializers
 
 from app.custom_user.models import CartPosition, CustomUser
 from app.order.serializers import OrderWithDishesSerializer
-from app.restaurant.models import Dish
+from app.restaurant.models import RestaurantDish
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -40,8 +40,8 @@ class DishIdAndQuantitySerializer(serializers.Serializer):
 
     def validate_dish_id(self, value: UUID):
         try:
-            Dish.objects.get(pk=value)
-        except Dish.DoesNotExist:
+            RestaurantDish.objects.get(pk=value)
+        except RestaurantDish.DoesNotExist:
             raise serializers.ValidationError(f"Dish with pk {value} dose not exist.")
         return value
 

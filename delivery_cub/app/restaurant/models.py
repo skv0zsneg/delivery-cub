@@ -24,7 +24,7 @@ class Restaurant(models.Model):
         verbose_name_plural = "рестораны"
 
 
-class Dish(models.Model):
+class RestaurantDish(models.Model):
     """Блюдо"""
 
     id = models.UUIDField(

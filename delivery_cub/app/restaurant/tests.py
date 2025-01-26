@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from app.custom_user.models import CustomUser
-from app.restaurant.models import Dish, Restaurant
+from app.restaurant.models import RestaurantDish, Restaurant
 
 
 class RestaurantTests(APITestCase):
@@ -16,19 +16,19 @@ class RestaurantTests(APITestCase):
         self.restaurant1 = Restaurant.objects.create(name="Restaurant 1")
         self.restaurant2 = Restaurant.objects.create(name="Restaurant 2")
 
-        self.dish1 = Dish.objects.create(
+        self.dish1 = RestaurantDish.objects.create(
             restaurant=self.restaurant1,
             title="Dish 1",
             description="Description 1",
             price=10.00,
         )
-        self.dish2 = Dish.objects.create(
+        self.dish2 = RestaurantDish.objects.create(
             restaurant=self.restaurant1,
             title="Dish 2",
             description="Description 2",
             price=20.00,
         )
-        self.dish3 = Dish.objects.create(
+        self.dish3 = RestaurantDish.objects.create(
             restaurant=self.restaurant2,
             title="Dish 3",
             description="Description 3",
@@ -76,13 +76,13 @@ class DishTests(APITestCase):
         self.client.force_authenticate(user=self.user)
 
         self.restaurant = Restaurant.objects.create(name="Restaurant")
-        self.dish1 = Dish.objects.create(
+        self.dish1 = RestaurantDish.objects.create(
             restaurant=self.restaurant,
             title="Dish 1",
             description="Description 1",
             price=10.00,
         )
-        self.dish2 = Dish.objects.create(
+        self.dish2 = RestaurantDish.objects.create(
             restaurant=self.restaurant,
             title="Dish 2",
             description="Description 2",
@@ -111,8 +111,8 @@ class DishTests(APITestCase):
         }
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Dish.objects.count(), 3)
-        self.assertEqual(Dish.objects.get(id=response.data["id"]).title, "New Dish")
+        self.assertEqual(RestaurantDish.objects.count(), 3)
+        self.assertEqual(RestaurantDish.objects.get(id=response.data["id"]).title, "New Dish")
 
     def test_update_dish(self):
         url = reverse("dish-detail", args=[self.dish1.id])
@@ -131,7 +131,7 @@ class DishTests(APITestCase):
         url = reverse("dish-detail", args=[self.dish1.id])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(Dish.objects.count(), 1)
+        self.assertEqual(RestaurantDish.objects.count(), 1)
 
     def test_create_dish_with_negative_price(self):
         url = reverse("dish-list")
@@ -154,9 +154,9 @@ class DishTests(APITestCase):
         }
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Dish.objects.count(), 3)
-        self.assertEqual(Dish.objects.get(id=response.data["id"]).title, "New Dish")
-        self.assertEqual(Dish.objects.get(id=response.data["id"]).price, Decimal(0.0))
+        self.assertEqual(RestaurantDish.objects.count(), 3)
+        self.assertEqual(RestaurantDish.objects.get(id=response.data["id"]).title, "New Dish")
+        self.assertEqual(RestaurantDish.objects.get(id=response.data["id"]).price, Decimal(0.0))
 
 
 class MenuTests(APITestCase):
@@ -167,19 +167,19 @@ class MenuTests(APITestCase):
         self.restaurant1 = Restaurant.objects.create(name="Restaurant 1")
         self.restaurant2 = Restaurant.objects.create(name="Restaurant 2")
 
-        self.dish1 = Dish.objects.create(
+        self.dish1 = RestaurantDish.objects.create(
             restaurant=self.restaurant1,
             title="Dish 1",
             description="Description 1",
             price=10.00,
         )
-        self.dish2 = Dish.objects.create(
+        self.dish2 = RestaurantDish.objects.create(
             restaurant=self.restaurant1,
             title="Dish 2",
             description="Description 2",
             price=20.00,
         )
-        self.dish3 = Dish.objects.create(
+        self.dish3 = RestaurantDish.objects.create(
             restaurant=self.restaurant2,
             title="Dish 3",
             description="Description 3",

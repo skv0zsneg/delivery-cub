@@ -6,7 +6,7 @@ from rest_framework.test import APITestCase
 
 from app.custom_user.models import CartPosition, CustomUser
 from app.order.models import Order, OrderedDish
-from app.restaurant.models import Dish, Restaurant
+from app.restaurant.models import RestaurantDish, Restaurant
 
 
 class UserTests(APITestCase):
@@ -15,7 +15,7 @@ class UserTests(APITestCase):
         self.client.force_authenticate(user=self.user)
 
         self.restaurant = Restaurant.objects.create(name="Test Restaurant")
-        self.dish = Dish.objects.create(
+        self.dish = RestaurantDish.objects.create(
             restaurant=self.restaurant,
             title="Test Dish",
             description="Test Description",
@@ -89,7 +89,7 @@ class CartPositionTests(APITestCase):
         self.client.force_authenticate(user=self.user)
 
         self.restaurant = Restaurant.objects.create(name="Test Restaurant")
-        self.dish = Dish.objects.create(
+        self.dish = RestaurantDish.objects.create(
             restaurant=self.restaurant,
             title="Test Dish",
             description="Test Description",
