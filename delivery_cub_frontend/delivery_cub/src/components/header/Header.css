@@ -1,0 +1,13 @@
+.header {
+    width: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.header-menu {
+    min-width: 300px;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}

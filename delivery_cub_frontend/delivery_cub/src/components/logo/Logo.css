@@ -1,0 +1,11 @@
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 240px;
+}
+
+.logo-name {
+    font-size: 28px;
+    font-weight: bolder;
+}
