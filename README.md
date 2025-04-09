@@ -44,3 +44,10 @@ Backend:
 $ cd delivery_cub
 $ bash /scripts/lint_checks.sh
 ```
+
+Generate API client for frontend:
+
+```bash
+$ cd delivery_cub_fronted/delivery_cub
+$ openapi-generator-cli generate -i <IP:PORT>/api/schema/ -g typescript-axios -o src/components/api/
+```

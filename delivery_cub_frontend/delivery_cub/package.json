@@ -7,9 +7,12 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate-api": "openapi-generator-cli generate -i http://127.0.0.1:8000/api/schema/ -g typescript-axios -o src/components/api/openapi_generated/"
   },
   "dependencies": {
+    "@types/axios": "^0.9.36",
+    "axios": "^1.8.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
